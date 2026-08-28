@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome to [Restaurant Name], offering the finest [Cuisine Type] in [City/Neighborhood]. Reserve your table today.">
+    <title>[Restaurant Name] | Authentic [Cuisine Type] Experience</title>
+    
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES (Theme customization)
+           ========================================================================== */
+        :root {
+            /* Colors */
+            --color-bg: #FAFAFA;
+            --color-bg-alt: #F3F4F6;
+            --color-text-main: #1F2937;
+            --color-text-muted: #6B7280;
+            --color-primary: #111827; 
+            --color-accent: #92400E; /* Elegant rustic warm tone */
+            --color-accent-hover: #78350F;
+            --color-white: #FFFFFF;
+            --color-border: #E5E7EB;
+            
+            /* Typography */
+            /* System font stack for body, generic serif for headings to avoid external requests */
+            --font-heading: 'Georgia', 'Times New Roman', serif;
+            --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            
+            /* Spacing & Layout */
+            --header-height: 70px;
+            --section-padding: 6rem 5%;
+            --container-max-width: 1200px;
+            --border-radius: 4px;
+            --transition-speed: 0.3s;
+        }
+
+        /* ==========================================================================
+           RESET & GLOBAL STYLES
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-height); /* Prevents header from hiding content */
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text-main);
+            background-color: var(--color-bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: normal;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color var(--transition-speed) ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+        }
+
+        section {
+            padding: var(--section-padding);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--color-text-muted);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--color-accent);
+            color: var(--color-white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed) ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: var(--font-body);
+        }
+
+        .btn:hover {
+            background-color: var(--color-accent-hover);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-accent);
+            border: 2px solid var(--color-accent);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+        }
+
+        /* Standardized Placeholder Image Data-URI Background */
+        .placeholder-bg {
+            background-color: var(--color-border);
+            background-image: linear-gradient(135deg, #e5e7eb 25%, #d1d5db 25%, #d1d5db 50%, #e5e7eb 50%, #e5e7eb 75%, #d1d5db 75%, #d1d5db 100%);
+            background-size: 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-muted);
+            font-family: var(--font-body);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ==========================================================================
+           HEADER & NAVIGATION
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--header-height);
+            background-color: transparent;
+            z-index: 1000;
+            transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+
+        header.scrolled {
+            background-color: var(--color-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 0 5%;
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-white);
+        }
+
+        header.scrolled .logo,
+        header.scrolled .nav-links a,
+        header.scrolled .mobile-menu-btn {
+            color: var(--color-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--color-white);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-accent);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--color-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           HERO SECTION
+           ========================================================================== */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background-color: #1a1a1a;
+            /* Placeholder gradient to simulate dark, moody background image */
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100%25" height="100%25"%3E%3Crect width="100%25" height="100%25" fill="%23222" /%3E%3C/svg%3E') center/cover;
+            color: var(--color-white);
+            padding: 0 5%;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #d1d5db;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* ==========================================================================
+           ABOUT SECTION
+           ========================================================================== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--color-text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* ==========================================================================
+           MENU SECTION
+           ========================================================================== */
+        .menu-section {
+            background-color: var(--color-bg-alt);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem 4rem;
+        }
+
+        .menu-category h3 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--color-accent);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .menu-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-item-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .menu-item-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+        }
+
+        .menu-item-dots {
+            flex-grow: 1;
+            border-bottom: 2px dotted #D1D5DB;
+            margin: 0 10px;
+            opacity: 0.7;
+        }
+
+        .menu-item-price {
+            font-weight: 600;
+            color: var(--color-accent);
+        }
+
+        .menu-item-desc {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================================================
+           GALLERY SECTION
+           ========================================================================== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1 / 1;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .gallery-item div {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover div {
+            transform: scale(1.05);
+        }
+
+        /* ==========================================================================
+           TESTIMONIALS SECTION
+           ========================================================================== */
+        .testimonials-section {
+            background-color: var(--color-bg-alt);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background-color: var(--color-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .stars {
+            color: var(--color-accent);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .quote {
+            font-style: italic;
+            color: var(--color-text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .author {
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ==========================================================================
+           RESERVATION & CONTACT SECTION
+           ========================================================================== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .reservation-form {
+            background-color: var(--color-bg);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--color-text-main);
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(146, 64, 14, 0.1);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-block {
+            margin-bottom: 2rem;
+        }
+
+        .info-block h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-block p {
+            color: var(--color-text-muted);
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 250px;
+            border-radius: var(--border-radius);
+            margin-top: auto;
+        }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer {
+            background-color: var(--color-primary);
+            color: #9CA3AF;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            max-width: var(--container-max-width);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-brand h2 {
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links h4 {
+            color: var(--color-white);
+            margin-bottom: 1rem;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN (Media Queries)
+           ========================================================================== */
+        @media (max-width: 900px) {
+            .menu-grid, .about-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-image {
+                aspect-ratio: 16/9;
+            }
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: var(--header-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height));
+                background-color: var(--color-bg);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transition: left var(--transition-speed) ease;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links a {
+                color: var(--color-primary);
+                font-size: 1.2rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            header {
+                background-color: var(--color-bg);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .logo, .mobile-menu-btn {
+                color: var(--color-primary);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header id="header">
+        <div class="nav-container">
+            <a href="#" class="logo">[Restaurant Name]</a>
+            
+            <button class="mobile-menu-btn" id="mobile-btn" aria-label="Toggle Navigation" aria-expanded="false">
+                ☰
+            </button>
+
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#menu" class="nav-link">Menu</a></li>
+                    <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                    <li><a href="#reservation" class="nav-link">Reservations</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Banner -->
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <h1>Taste the Authenticity</h1>
+                <p>Experience the finest [Cuisine/Concept] right in the heart of [City]. A culinary journey crafted with passion, tradition, and local ingredients.</p>
+                <div class="hero-buttons">
+                    <a href="#reservation" class="btn">Reserve a Table</a>
+                    <a href="#menu" class="btn btn-outline" style="color:white; border-color:white;">View Menu</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="container" id="about">
+            <div class="about-grid">
+                <div class="about-image placeholder-bg">
+                    [Atmosphere Photo Placeholder]
+                </div>
+                <div class="about-text">
+                    <h2>Our Story</h2>
+                    <p>Founded in [Year], [Restaurant Name] was born out of a desire to bring genuine [Cuisine Type] flavors to [Neighborhood]. We believe in food that speaks to the soul—simple, fresh, and unforgettable.</p>
+                    <p>Our philosophy is rooted in seasonality. Every dish on our menu reflects a deep commitment to sourcing the best local ingredients and honoring the time-tested techniques of our culinary heritage. Whether you're here for a quick bite or a celebratory feast, we welcome you to our table.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section class="menu-section" id="menu">
+            <div class="container">
+                <h2 class="section-title">Our Menu</h2>
+                <p class="section-subtitle">Crafted with care, designed to be shared.</p>
+                
+                <div class="menu-grid">
+                    
+                    <!-- Starters -->
+                    <div class="menu-category">
+                        <h3>Starters</h3>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Signature Starter One]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$12</span>
+                            </div>
+                            <p class="menu-item-desc">Freshly sourced ingredients with a hint of local spices.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Classic Appetizer]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$14</span>
+                            </div>
+                            <p class="menu-item-desc">Crispy and golden, served with house-made dipping sauce.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Seasonal Salad]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$11</span>
+                            </div>
+                            <p class="menu-item-desc">Mixed greens, candied nuts, vinaigrette drizzle.</p>
+                        </div>
+                    </div>
+
+                    <!-- Mains -->
+                    <div class="menu-category">
+                        <h3>Mains</h3>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Chef's Signature Dish]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$28</span>
+                            </div>
+                            <p class="menu-item-desc">Slow-cooked to perfection, resting on a bed of savory puree.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Hearty Main Two]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$24</span>
+                            </div>
+                            <p class="menu-item-desc">Locally sourced, grilled over an open flame with herb butter.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Vegetarian Delight]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$20</span>
+                            </div>
+                            <p class="menu-item-desc">A beautiful composition of seasonal roasted vegetables and grains.</p>
+                        </div>
+                    </div>
+
+                    <!-- Desserts -->
+                    <div class="menu-category">
+                        <h3>Desserts</h3>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Decadent Dessert]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$10</span>
+                            </div>
+                            <p class="menu-item-desc">Rich, dark chocolate served warm with a scoop of vanilla bean.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Fruit Tart]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$9</span>
+                            </div>
+                            <p class="menu-item-desc">Seasonal fruits glazed over a buttery pastry crust.</p>
+                        </div>
+                    </div>
+
+                    <!-- Drinks -->
+                    <div class="menu-category">
+                        <h3>Beverages</h3>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[House Cocktail]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$14</span>
+                            </div>
+                            <p class="menu-item-desc">Artisanal spirits mixed with fresh citrus and botanical infusions.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">[Local Craft Beer]</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">$8</span>
+                            </div>
+                            <p class="menu-item-desc">Draft selection from our favorite nearby breweries.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="container" id="gallery">
+            <h2 class="section-title">Gallery</h2>
+            <p class="section-subtitle">A glimpse into our space and offerings.</p>
+            
+            <div class="gallery-grid">
+                <!-- Change inner divs to <img> tags when you have real photos -->
+                <div class="gallery-item">
+                    <div class="placeholder-bg">[Food Photo]</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-bg">[Interior Photo]</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-bg">[Drinks Photo]</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-bg">[Details Photo]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <div class="container">
+                <h2 class="section-title">What Our Guests Say</h2>
+                <div class="testimonials-grid">
+                    
+                    <div class="testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p class="quote">"Absolutely incredible experience. The [Signature Dish] was out of this world, and the atmosphere strikes the perfect balance between elegant and cozy."</p>
+                        <p class="author">— Jane Doe</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p class="quote">"A hidden gem in [Neighborhood]! The staff were so accommodating and the wine pairing recommendations were spot on. Will definitely be returning."</p>
+                        <p class="author">— John Smith</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p class="quote">"Every bite is packed with authentic flavor. It feels like taking a quick trip to [Origin Country]. Highly recommend making a reservation in advance!"</p>
+                        <p class="author">— Emily R.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Reservation & Contact Section -->
+        <section class="container" id="reservation">
+            <h2 class="section-title">Book a Table & Visit Us</h2>
+            <p class="section-subtitle">Reserve online or call us directly. We look forward to hosting you.</p>
+
+            <div class="contact-grid">
+                
+                <!-- Reservation Form -->
+                <div class="reservation-form">
+                    <form id="booking-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-name">Full Name</label>
+                                <input type="text" id="res-name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="res-email">Email Address</label>
+                                <input type="email" id="res-email" required placeholder="john@example.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-phone">Phone Number</label>
+                                <input type="tel" id="res-phone" required placeholder="(555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="res-guests">Number of Guests</label>
+                                <select id="res-guests" required>
+                                    <option value="1">1 Person</option>
+                                    <option value="2" selected>2 People</option>
+                                    <option value="3">3 People</option>
+                                    <option value="4">4 People</option>
+                                    <option value="5">5 People</option>
+                                    <option value="6+">6+ (Please call)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-date">Date</label>
+                                <input type="date" id="res-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="res-time">Time</label>
+                                <input type="time" id="res-time" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn" style="width: 100%;">Confirm Reservation</button>
+                    </form>
+                </div>
+
+                <!-- Contact & Hours Info -->
+                <div class="contact-info" id="contact">
+                    <div>
+                        <div class="info-block">
+                            <h3>Location</h3>
+                            <p>123 Placeholder Street<br>Neighborhood, City, ZIP 12345</p>
+                        </div>
+                        
+                        <div class="info-block">
+                            <h3>Hours of Operation</h3>
+                            <p>Monday – Thursday: 5:00 PM – 10:00 PM</p>
+                            <p>Friday – Saturday: 12:00 PM – 11:00 PM</p>
+                            <p>Sunday: 11:00 AM – 9:00 PM</p>
+                        </div>
+
+                        <div class="info-block">
+                            <h3>Contact</h3>
+                            <p>Phone: (555) 987-6543</p>
+                            <p>Email: hello@restaurantname.com</p>
+                        </div>
+                    </div>
+
+                    <!-- Map Placeholder -->
+                    <div class="map-placeholder placeholder-bg">
+                        [Interactive Map Placeholder]
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>[Restaurant Name]</h2>
+                <p>Bringing authentic flavors and warm hospitality to [City]. A culinary experience you won't forget.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#menu">Our Menu</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#reservation">Reservations</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Follow Us</h4>
+                <ul>
+                    <li><a href="#" target="_blank" rel="noopener">Instagram</a></li>
+                    <li><a href="#" target="_blank" rel="noopener">Facebook</a></li>
+                    <li><a href="#" target="_blank" rel="noopener">Twitter (X)</a></li>
+                    <li><a href="#" target="_blank" rel="noopener">Yelp</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="current-year"></span> [Restaurant Name]. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript (Vanilla) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // 2. Sticky Header changing background on scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // 3. Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-btn');
+            const navLinks = document.getElementById('nav-links');
+            const navItems = document.querySelectorAll('.nav-link');
+
+            function toggleMenu() {
+                navLinks.classList.toggle('active');
+                const isExpanded = navLinks.classList.contains('active');
+                mobileBtn.setAttribute('aria-expanded', isExpanded);
+                mobileBtn.innerHTML = isExpanded ? '✕' : '☰';
+            }
+
+            mobileBtn.addEventListener('click', toggleMenu);
+
+            // Close mobile menu when a link is clicked
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // 4. Form Submission Intercept (Placeholder logic)
+            const form = document.getElementById('booking-form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Basic validation is handled by HTML5 "required" attributes
+                const name = document.getElementById('res-name').value;
+                const date = document.getElementById('res-date').value;
+                const time = document.getElementById('res-time').value;
+                
+                alert(`Thank you, ${name}! Your reservation request for ${date} at ${time} has been received. (This is a template placeholder).`);
+                form.reset();
+            });
+
+        });
+    </script>
+</body>
+</html>
